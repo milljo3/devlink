@@ -1,0 +1,11 @@
+/server/node_modules
+/server/.env
+/server/src/generated/prisma
+*.log
+*.js
+*.map
+.DS_Store
+Thumbs.db
+/coverage
+/test-results
+.idea/
