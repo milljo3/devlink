@@ -53,16 +53,14 @@ router.put('/links', authMiddleware, async (req: AuthenticatedRequest, res: Resp
 
     const links = validation.data;
 
-    const numericUserId = Number(userId);
-
     try {
         await prisma.$transaction([
             prisma.links.deleteMany({
-                where: {user_id: numericUserId}
+                where: {user_id: userId}
             }),
             prisma.links.createMany({
                 data: links.map(link => ({
-                    user_id: numericUserId,
+                    user_id: userId,
                     title: link.title,
                     url: link.url
                 }))

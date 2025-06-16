@@ -1,6 +1,7 @@
 /server/node_modules
 /server/.env
 /server/src/generated/prisma
+/server/devlist.rest
 *.log
 *.js
 *.map
