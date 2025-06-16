@@ -2,7 +2,8 @@
 import express, { Request, Response } from 'express';
 // @ts-ignore
 import dotenv from 'dotenv';
-import authRoutes from "./routes/authRoutes";
+import authRoutes from './routes/authRoutes';
+import linksRoutes from './routes/userRoutes';
 
 dotenv.config();
 
@@ -16,5 +17,6 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use('/auth', authRoutes);
+app.use('/:username', linksRoutes)
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));

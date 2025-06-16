@@ -5,8 +5,8 @@ import bcrypt from 'bcryptjs';
 // @ts-ignore
 import jwt from 'jsonwebtoken';
 // @ts-ignore
-import prisma from "../prismaClient";
-import {z} from "zod";
+import prisma from '../prismaClient';
+import {z} from 'zod';
 
 const router = express.Router();
 
@@ -41,7 +41,7 @@ router.post('/register', async (req, res) => {
         if (error instanceof z.ZodError) {
             return res.status(400).send({error: error.errors});
         }
-        return res.status(400).send({error: 'Server Error: ' + error});
+        return res.status(400).send({message: 'Server Error', error: error});
     }
 });
 

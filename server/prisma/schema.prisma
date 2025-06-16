@@ -21,8 +21,9 @@ model User {
 }
 
 model Links {
-  id       Int    @id @default(autoincrement())
-  user_id  Int
-  link_url String
-  user     User   @relation(fields: [user_id], references: [id])
+  id      Int    @id @default(autoincrement())
+  user_id Int
+  title   String
+  url     String
+  user    User   @relation(fields: [user_id], references: [id])
 }
