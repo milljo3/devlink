@@ -6,7 +6,7 @@ import prisma from '../prismaClient';
 
 const router = express.Router({mergeParams: true});
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/:username', async (req: Request, res: Response) => {
     const {username} = req.params;
 
     try {
@@ -38,7 +38,7 @@ const linkSchema = z.object({
 });
 const linksArraySchema = z.array(linkSchema).max(20);
 
-router.put('/links', authMiddleware, async (req: AuthenticatedRequest, res: Response) => {
+router.put('/:username', authMiddleware, async (req: AuthenticatedRequest, res: Response) => {
     const paramUsername = req.params.username;
     const {username, userId} = req;
 

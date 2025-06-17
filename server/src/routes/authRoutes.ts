@@ -23,7 +23,7 @@ router.post('/register', async (req, res) => {
             where: {username}
         });
         if (existingUser) {
-            return res.status(400).send({error: 'Username already exists'});
+            return res.status(400).send({message: 'Username already exists'});
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -35,7 +35,12 @@ router.post('/register', async (req, res) => {
             }
         });
 
-        return res.status(201).send({message: 'User created successfully.', userId: user.id});
+        const token = jwt.sign({
+            id: user.id,
+            username: user.username
+        }, process.env.JWT_SECRET, {expiresIn: '1h'});
+
+        return res.status(201).send({message: 'User created successfully.', userId: user.id, token});
     }
     catch (error) {
         if (error instanceof z.ZodError) {
@@ -53,12 +58,12 @@ router.post('/login', async (req, res) => {
             where: {username}
         });
         if (!user) {
-            return res.status(400).send({error: 'Username or password is incorrect'});
+            return res.status(400).send({message: 'Username or password is incorrect'});
         }
 
         const isValid = await bcrypt.compare(password, user.password);
         if (!isValid) {
-            return res.status(400).send({error: 'Invalid username or password'});
+            return res.status(400).send({message: 'Invalid username or password'});
         }
 
         const token = jwt.sign({
