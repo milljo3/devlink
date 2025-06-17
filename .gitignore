@@ -1,7 +1,7 @@
 /server/node_modules
 /server/.env
 /server/src/generated/prisma
-/server/devlist.rest
+*.rest
 *.log
 *.js
 *.map
@@ -11,3 +11,4 @@ Thumbs.db
 /test-results
 .idea/
 /.idea/
+/client/node_modules
