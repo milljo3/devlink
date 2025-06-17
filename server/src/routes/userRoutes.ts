@@ -33,34 +33,34 @@ router.get('/:username', async (req: Request, res: Response) => {
 
 
 const linkSchema = z.object({
-    title: z.string().min(1).max(100),
-    url: z.string().url(),
+    title: z.string().trim().min(1).max(100),
+    url: z.string().trim().url(),
 });
 const linksArraySchema = z.array(linkSchema).max(20);
 
 router.put('/:username', authMiddleware, async (req: AuthenticatedRequest, res: Response) => {
-    const paramUsername = req.params.username;
-    const {username, userId} = req;
+    const {username} = req.params;
+    const {username: tokenUsername} = req;
 
-    if (paramUsername !== username) {
-        return res.status(403).send({message: 'You are not authorized to edit this user’s links'});
+    if (username !== tokenUsername) {
+        return res.status(403).json({ message: "Forbidden: You can only edit your own links" });
     }
 
-    const validation = linksArraySchema.safeParse(req.body);
-    if (!validation.success) {
-        return res.status(400).send({message: validation.error.errors});
+    const parseResult = linksArraySchema.safeParse(req.body);
+    if (!parseResult.success) {
+        return res.status(400).json({ message: "Invalid link data", errors: parseResult.error.errors });
     }
 
-    const links = validation.data;
+    const validLinks = parseResult.data;
 
     try {
         await prisma.$transaction([
             prisma.links.deleteMany({
-                where: {user_id: userId}
+                where: {user_id: req.userId}
             }),
             prisma.links.createMany({
-                data: links.map(link => ({
-                    user_id: userId,
+                data: validLinks.map(link => ({
+                    user_id: req.userId,
                     title: link.title,
                     url: link.url
                 }))

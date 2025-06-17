@@ -7,9 +7,9 @@ export const getUserLinks = async (username: string) => {
 
 export const updateUserLinks = async (
     username: string,
+    token: string | null,
     links: { title: string; url: string }[]
 ) => {
-    const token = localStorage.getItem('token');
     const res = await axios.put(`/api/users/${username}`, links, {
         headers: {
             Authorization: token,

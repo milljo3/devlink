@@ -1,40 +1,58 @@
 import React, {useState} from "react";
 import '../styles/home.css';
-import {login, register} from "../api/auth";
+import {login as loginApi, register as registerApi} from "../api/auth";
 import {useNavigate} from "react-router-dom";
-import {useAuth} from "../hooks/useAuth";
+import {useAuth} from "../context/AuthContext"
+import {isValidUsername, isValidPassword} from "../utils/validation";
 
 const Home = () => {
-    const [username, setUsername] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
+    const [usernameInput, setUsernameInput] = useState<string>("");
+    const [passwordInput, setPasswordInput] = useState<string>("");
 
     const navigate = useNavigate();
-    const {isLoggedIn} = useAuth();
-
+    const {username, login} = useAuth();
 
     const handleLogin = async () => {
-        try {
-            const data = await login(username, password);
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("username", data.username);
-            navigate(`/${username}`);
+        if (!isValidUsername(usernameInput)) {
+            alert("Invalid username. Use 3–20 alphanumeric characters.");
+            return;
         }
-        catch (error) {
-            alert("Login failed!");
-            console.log(error);
+        if (!isValidPassword(passwordInput)) {
+            alert("Password must be at least 6 characters.");
+            return;
+        }
+
+        try {
+            const data = await loginApi(usernameInput, passwordInput);
+            login(data.username, data.token);
+            navigate(`/${data.username}`);
+        }
+        catch (error: any) {
+            const errorMessage = error.response?.data?.message || "Login failed!"
+            alert(errorMessage);
+            console.error(error);
         }
     }
 
     const handleRegister = async () => {
-        try {
-            const data = await register(username, password);
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("username", data.username);
-            navigate(`/${username}`);
+        if (!isValidUsername(usernameInput)) {
+            alert("Invalid username. Use 3–20 alphanumeric characters.");
+            return;
         }
-        catch (error) {
-            alert("Registration failed!");
-            console.log(error);
+        if (!isValidPassword(passwordInput)) {
+            alert("Password must be at least 6 characters.");
+            return;
+        }
+
+        try {
+            const data = await registerApi(usernameInput, passwordInput);
+            login(data.username, data.token);
+            navigate(`/${data.username}`);
+        }
+        catch (error: any) {
+            const errorMessage = error.response?.data?.message || "Registration failed!"
+            alert(errorMessage);
+            console.error(error);
         }
     }
 
@@ -42,21 +60,23 @@ const Home = () => {
         <div id="home">
             <div id="home-main">
                 <h1>DevLink</h1>
-                <div id='home-input'>
-                    <input
-                        id="home-input-user"
-                        type="text"
-                        placeholder="Enter username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}/>
-                    <input
-                        id="home-input-pass"
-                        type="password"
-                        placeholder="Enter password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}/>
-                </div>
-                {!isLoggedIn
+                {!username &&
+                    <div id='home-input'>
+                        <input
+                            id="home-input-user"
+                            type="text"
+                            placeholder="Enter username"
+                            value={usernameInput}
+                            onChange={(e) => setUsernameInput(e.target.value)}/>
+                        <input
+                            id="home-input-pass"
+                            type="password"
+                            placeholder="Enter password"
+                            value={passwordInput}
+                            onChange={(e) => setPasswordInput(e.target.value)}/>
+                    </div>
+                }
+                {!username
                     ?
                     <div id="home-logged-out">
                         <button onClick={handleLogin}>Log in</button>

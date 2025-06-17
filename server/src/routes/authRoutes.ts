@@ -1,10 +1,7 @@
 // @ts-ignore
 import express from 'express';
-// @ts-ignore
-import bcrypt from 'bcryptjs';
-// @ts-ignore
-import jwt from 'jsonwebtoken';
-// @ts-ignore
+import bcrypt = require('bcryptjs');
+import jwt = require('jsonwebtoken');
 import prisma from '../prismaClient';
 import {z} from 'zod';
 
@@ -40,13 +37,13 @@ router.post('/register', async (req, res) => {
             username: user.username
         }, process.env.JWT_SECRET, {expiresIn: '1h'});
 
-        return res.status(201).send({message: 'User created successfully.', userId: user.id, token});
+        return res.status(201).send({token, username, message: 'User created successfully'});
     }
     catch (error) {
         if (error instanceof z.ZodError) {
-            return res.status(400).send({error: error.errors});
+            return res.status(400).send({message: error.errors});
         }
-        return res.status(400).send({message: 'Server Error', error: error});
+        return res.status(400).send({message: 'Server Error'});
     }
 });
 
@@ -71,13 +68,13 @@ router.post('/login', async (req, res) => {
             username: user.username
         }, process.env.JWT_SECRET, {expiresIn: '1h'});
 
-        return res.status(200).send({message: 'Login successful', token});
+        return res.status(200).send({token, username, message: "Login success"});
     }
     catch (error) {
         if (error instanceof z.ZodError) {
-            return res.status(400).send({error: error.errors});
+            return res.status(400).send({message: error.errors});
         }
-        return res.status(400).send({error: 'Server Error: ' + error});
+        return res.status(400).send({message: 'Server Error'});
     }
 });
 

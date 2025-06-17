@@ -1,14 +1,16 @@
 import '../styles/navbar.css';
+import {useAuth} from "../context/AuthContext";
 
 const Navbar = () => {
+    const {username, logout} = useAuth();
+
     return (
         <>
-            {(localStorage.getItem('username') || localStorage.getItem('token')) &&
+            {username &&
                 <button
                     id="navbar-sign-out"
                     onClick={() => {
-                        localStorage.removeItem("username");
-                        localStorage.removeItem("token");
+                        logout();
                     }}
                 >
                     Sign out

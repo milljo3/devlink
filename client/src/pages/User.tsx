@@ -3,6 +3,7 @@ import LinkCard from "../components/LinkCard";
 import {useParams} from "react-router-dom";
 import {getUserLinks, updateUserLinks} from "../api/user";
 import {useIsOwner} from "../hooks/useIsOwner";
+import {useAuth} from "../context/AuthContext";
 
 interface linkCard {
     title: string;
@@ -15,20 +16,25 @@ const User = () => {
     const [linkCards, setLinkCards] = useState<linkCard[]>([]);
     const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
     const isOwner = useIsOwner();
+    const {token} = useAuth();
 
     useEffect(() => {
         if (username) {
             getUserLinks(username)
                 .then(data => setLinkCards(data.links))
                 .catch(err => console.log(err));
+            if (isOwner && linkCards.length === 0) {
+                setIsEditing(true);
+            }
         }
-    }, []);
+    }, [username]);
 
     useEffect(() => {
         if (!isEditing || !username) return;
         if (timer) clearTimeout(timer);
         const newTimer = setTimeout(() => {
-            updateUserLinks(username, linkCards)
+            const validLinks = linkCards.filter(link => link.title.trim() && link.url.trim());
+            updateUserLinks(username, token, validLinks)
                 .then(() => console.log('Updated user links'))
                 .catch(err => console.log(err));
         }, 1000)
@@ -37,14 +43,29 @@ const User = () => {
         return () => clearTimeout(newTimer);
     }, [linkCards, username, isEditing]);
 
+    useEffect(() => {
+        if (!isOwner && isEditing) {
+            setIsEditing(false)
+        }
+    }, [isOwner]);
+
     const addNewCard = () => {
         setLinkCards(prevState => [...prevState, {title: '', url: ''}]);
     };
 
+    const toggleEditing = () => {
+        if (isEditing) {
+            const validLinks = linkCards.filter(link => link.title.trim() && link.url.trim());
+            setLinkCards(validLinks);
+        }
+        setIsEditing(!isEditing);
+    }
+
     return (
         <div id="user">
+            <a href="/">DevLink</a>
             {isOwner &&
-                <button onClick={() => setIsEditing(!isEditing)}>
+                <button onClick={toggleEditing}>
                     <i className="fa-solid fa-pen"></i>
                 </button>}
             <h1>{username}</h1>
