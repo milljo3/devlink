@@ -6,3 +6,13 @@ export const isValidUsername = (username: string) => {
 export const isValidPassword = (password: string) => {
     return password.length >= 6 && password.length <= 25;
 }
+
+export const isValidUrl = (url: string): boolean => {
+    try {
+        new URL(url);
+        return true;
+    }
+    catch {
+        return false;
+    }
+}

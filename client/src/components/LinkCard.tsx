@@ -3,22 +3,26 @@ interface LinkCard {
     url: string;
 }
 
+interface LinkCardProps {
+    card: LinkCard,
+    index: number;
+    isEditing: boolean;
+    isValid: boolean;
+    onChange?: (index: number, updatedCard: LinkCard) => void;
+    onDelete?: (index: number) => void;
+}
+
 const LinkCard =
     ({
          card,
          index,
          isEditing,
+         isValid,
          onChange,
          onDelete
-    }: {
-        card: LinkCard,
-        index: number;
-        isEditing: boolean;
-        onChange?: (index: number, updatedCard: LinkCard) => void;
-        onDelete?: (index: number) => void;
-    }) => {
+    }: LinkCardProps) => {
     return (
-        <div className="link-card">
+        <>
             {isEditing ? (
                 <div className="link-edit-card">
                     <div>
@@ -33,6 +37,7 @@ const LinkCard =
                             value={card.url}
                             onChange={(e) => onChange?.(index, {...card, url: e.target.value})}
                             placeholder="URL"
+                            className={!isValid ? 'link-card-invalid' : ''}
                         />
                     </div>
                     <button onClick={() => onDelete?.(index)}>
@@ -41,11 +46,11 @@ const LinkCard =
                 </div>
 
             ) : (
-                <a href={card.url} target="_blank" rel="noopener noreferrer">
+                <a className="link-display-card" href={card.url} target="_blank" rel="noopener noreferrer">
                     {card.title}
                 </a>
             )}
-        </div>
+        </>
     );
 }
 

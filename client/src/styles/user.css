@@ -1,0 +1,132 @@
+#user {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    gap: 15px;
+}
+
+#user-edit {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+}
+
+#user-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20vh;
+}
+
+#user-title h1 {
+    font-size: 4rem;
+    margin: 0;
+}
+
+#user-title a {
+    text-decoration: transparent;
+    color: inherit;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+#user-title a:hover {
+    text-decoration: underline;
+}
+
+#user-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    width: 100%;
+    gap: 12px;
+    padding-bottom: 25px;
+}
+
+#user-add-card {
+    padding: 0.5rem;
+    border-radius: 10px;
+    width: 300px;
+    height: 50px;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    box-sizing: border-box;
+    font-size: clamp(0.75rem, 4vw, 1.5rem);
+}
+
+.link-edit-card,
+.link-display-card {
+    display: flex;
+    width: 300px;
+    height: 50px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    align-items: center;
+    padding: 0 1rem;
+}
+
+.link-edit-card {
+    background-color: gray;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+.link-edit-card div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 3px;
+}
+
+.link-edit-card div input {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    outline: none;
+    border-bottom: black solid 1px;
+    background: transparent;
+    color: black;
+}
+
+.link-edit-card div input::placeholder {
+    color: lightgray;
+    opacity: 1;
+}
+
+.link-edit-card div input:focus::placeholder {
+    color: darkgray;
+}
+
+.link-edit-card button {
+    width: 40px;
+    height: 40px;
+}
+
+.link-card-invalid {
+    border: 1px solid red !important;
+    background-color: #ffe6e6 !important;
+}
+
+.link-display-card {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: cornflowerblue;
+    text-decoration: none;
+    color: black;
+    outline: transparent solid 1px;
+    transition-duration: 200ms;
+}
+
+.link-display-card:hover {
+    outline: black solid 1px;
+    background-color: lightblue;
+}

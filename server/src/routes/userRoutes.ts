@@ -36,7 +36,7 @@ const linkSchema = z.object({
     title: z.string().trim().min(1).max(100),
     url: z.string().trim().url(),
 });
-const linksArraySchema = z.array(linkSchema).max(20);
+const linksArraySchema = z.array(linkSchema).max(10);
 
 router.put('/:username', authMiddleware, async (req: AuthenticatedRequest, res: Response) => {
     const {username} = req.params;
