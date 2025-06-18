@@ -13,6 +13,10 @@
     position: fixed;
     top: 10px;
     left: 10px;
+    border-radius: 0.5rem;
+    height: 30px;
+    width: 30px;
+    box-sizing: border-box;
 }
 
 #user-title {
@@ -70,11 +74,11 @@
     box-sizing: border-box;
     border-radius: 10px;
     align-items: center;
-    padding: 0 1rem;
+    padding: 0 0.8rem;
 }
 
 .link-edit-card {
-    background-color: gray;
+    background-color: var(--text-light);
     justify-content: space-between;
     gap: 5px;
 }
@@ -97,17 +101,18 @@
 }
 
 .link-edit-card div input::placeholder {
-    color: lightgray;
+    color: black;
     opacity: 1;
 }
 
 .link-edit-card div input:focus::placeholder {
-    color: darkgray;
+    color: #4c4c4c;
 }
 
 .link-edit-card button {
     width: 40px;
     height: 40px;
+    border-radius: 7px;
 }
 
 .link-card-invalid {
@@ -121,12 +126,12 @@
     justify-content: center;
     background-color: cornflowerblue;
     text-decoration: none;
-    color: black;
+    color: var(--text-light);
     outline: transparent solid 1px;
     transition-duration: 200ms;
 }
 
 .link-display-card:hover {
-    outline: black solid 1px;
+    outline: var(--button-border) solid 1px;
     background-color: lightblue;
 }

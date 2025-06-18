@@ -24,32 +24,33 @@ const User = () => {
     const hasInvalidInput = cardValidity.some(valid => !valid);
 
     const MAX_CARDS = 10;
-    const AUTO_SAVE_DELAY_MS = 2500;
+    const AUTO_SAVE_DELAY_MS = 1500;
 
     useEffect(() => {
         if (username) {
-            getUserLinks(username)
+            getUserLinks(username.toLowerCase())
                 .then(data => {
                     setLinkCards(data.links);
                     setUserExists(true);
+                    if (isOwner && linkCards.length === 0) {
+                        setIsEditing(true);
+                    }
                 })
                 .catch(err => {
                     console.log(err);
                     setUserExists(false);
                 });
-            if (isOwner && linkCards.length === 0) {
-                setIsEditing(true);
-            }
         }
     }, [username]);
 
     useEffect(() => {
         if (!isEditing || !username) return;
         if (timer) clearTimeout(timer);
+
         const newTimer = setTimeout(() => {
             if (hasInvalidInput) return;
             const validLinks = linkCards.filter(link => link.title.trim() && link.url.trim());
-            updateUserLinks(username, token, validLinks)
+            updateUserLinks(username.toLowerCase(), token, validLinks)
                 .then(() => console.log('Updated user links'))
                 .catch(err => console.log(err));
         }, AUTO_SAVE_DELAY_MS)
@@ -81,6 +82,11 @@ const User = () => {
         if (isEditing) {
             const validLinks = linkCards.filter(link => link.title.trim() && link.url.trim());
             setLinkCards(validLinks);
+
+            if (!username) return;
+            updateUserLinks(username.toLowerCase(), token, validLinks)
+                .then(() => console.log('Updated user links'))
+                .catch(err => console.log(err));
         }
         setIsEditing(!isEditing);
     }
@@ -93,7 +99,8 @@ const User = () => {
                         {isOwner && !hasInvalidInput &&
                             <button id="user-edit" onClick={toggleEditing}>
                                 <i className="fa-solid fa-pen"></i>
-                            </button>}
+                            </button>
+                        }
                         <div id="user-title">
                             <h1>{username}</h1>
                             <a href="/" id="user-devlink">DevLink</a>

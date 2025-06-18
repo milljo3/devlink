@@ -13,7 +13,9 @@ const Home = () => {
     const {username, login} = useAuth();
 
     const handleLogin = async () => {
-        if (!isValidUsername(usernameInput)) {
+        const lowerUsernameInput = usernameInput.toLowerCase();
+
+        if (!isValidUsername(lowerUsernameInput)) {
             alert("Invalid username. Use 3–20 alphanumeric characters.");
             return;
         }
@@ -23,7 +25,7 @@ const Home = () => {
         }
 
         try {
-            const data = await loginApi(usernameInput, passwordInput);
+            const data = await loginApi(lowerUsernameInput, passwordInput);
             login(data.username, data.token);
             navigate(`/${data.username}`);
         }
@@ -35,7 +37,9 @@ const Home = () => {
     }
 
     const handleRegister = async () => {
-        if (!isValidUsername(usernameInput)) {
+        const lowerUsernameInput = usernameInput.toLowerCase();
+
+        if (!isValidUsername(lowerUsernameInput)) {
             alert("Invalid username. Use 3–20 alphanumeric characters.");
             return;
         }
@@ -45,7 +49,7 @@ const Home = () => {
         }
 
         try {
-            const data = await registerApi(usernameInput, passwordInput);
+            const data = await registerApi(lowerUsernameInput, passwordInput);
             login(data.username, data.token);
             navigate(`/${data.username}`);
         }
@@ -83,7 +87,7 @@ const Home = () => {
                         <button onClick={handleRegister}>Register</button>
                     </div>
                     :
-                    <button onClick={() => navigate(`/${username}`)}>View your DevLink</button>
+                    <button id="home-view-devlink" onClick={() => navigate(`/${username}`)}>View your DevLink</button>
                 }
             </div>
             <div id="home-signature">
