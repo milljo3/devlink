@@ -235,4 +235,4 @@ The backend is built with **Node.js** and **Express**, providing a RESTful API f
 
 ### Conclusion
 
-This project was a great way to practice integrating various modern technologies like React, Express, Prisma, PostgreSQL, Docker, and JWT authentication. I learned a lot about building full-stack applications and look forward to further improving and extending the project.
+This project was a great way to practice integrating various modern technologies like React, Express, Prisma, PostgreSQL, Docker, and JWT authentication. I learned a lot about building full-stack applications and look forward to further improving and extending the project in the future if time permits.
