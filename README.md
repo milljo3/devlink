@@ -64,7 +64,7 @@ This project was developed to gain hands-on experience with industry-standard to
 
    ```bash
    git clone https://github.com/milljo3/devlink.git
-   cd devlink
+   cd devlink/server
    ```
 
 2. **Set up environment variables**:
@@ -82,7 +82,6 @@ This project was developed to gain hands-on experience with industry-standard to
 3. **Install dependencies**:
 
    ```bash
-   cd server
    npm install
    ```
 
