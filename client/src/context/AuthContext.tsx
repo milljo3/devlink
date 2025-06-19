@@ -9,6 +9,7 @@ interface AuthContext {
 
 const AuthContext = createContext<AuthContext | undefined>(undefined);
 
+// AuthProvider component to provide auth state and methods to children
 export const AuthProvider = ({ children }: {children: React.ReactNode}) => {
     const [username, setUsername] = useState<string | null>(null);
     const [token, setToken] = useState<string | null>(null);
@@ -43,6 +44,7 @@ export const AuthProvider = ({ children }: {children: React.ReactNode}) => {
     );
 };
 
+// Custom hook to access the auth context in other components
 export const useAuth = () => {
     const context = useContext(AuthContext);
     if (!context) {

@@ -22,7 +22,6 @@ function authMiddleware(req: AuthenticatedRequest, res: Response, next: NextFunc
         return res.status(401).json({message: 'No token provided'});
     }
 
-
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET!);
         const result = decodedTokenSchema.safeParse(decoded);

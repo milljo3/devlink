@@ -6,6 +6,7 @@ import prisma from '../prismaClient';
 
 const router = express.Router({mergeParams: true});
 
+// Route to get a user's links
 router.get('/:username', async (req: Request, res: Response) => {
     const {username} = req.params;
 
@@ -32,12 +33,16 @@ router.get('/:username', async (req: Request, res: Response) => {
 })
 
 
+// Schema to validate the link data
 const linkSchema = z.object({
     title: z.string().trim().min(1).max(100),
     url: z.string().trim().url(),
 });
+
+// Schema to validate an array of links
 const linksArraySchema = z.array(linkSchema).max(10);
 
+// Route to over wright existing user's links with the new provided links
 router.put('/:username', authMiddleware, async (req: AuthenticatedRequest, res: Response) => {
     const {username} = req.params;
     const {username: tokenUsername} = req;
@@ -53,6 +58,7 @@ router.put('/:username', authMiddleware, async (req: AuthenticatedRequest, res: 
 
     const validLinks = parseResult.data;
 
+    // Use a Prisma transaction to delete the existing links and add the new ones
     try {
         await prisma.$transaction([
             prisma.links.deleteMany({

@@ -26,6 +26,7 @@ const User = () => {
     const MAX_CARDS = 10;
     const AUTO_SAVE_DELAY_MS = 1500;
 
+    // Get user link data from backend on page load, default to edit mode if owner and no links exist
     useEffect(() => {
         if (username) {
             getUserLinks(username.toLowerCase())
@@ -43,6 +44,7 @@ const User = () => {
         }
     }, [username]);
 
+    // Auto save valid links when editing
     useEffect(() => {
         if (!isEditing || !username) return;
         if (timer) clearTimeout(timer);
@@ -59,12 +61,14 @@ const User = () => {
         return () => clearTimeout(newTimer);
     }, [linkCards, username, isEditing]);
 
+    // Disable editing if the user logs out during edit mode
     useEffect(() => {
         if (!isOwner && isEditing) {
             setIsEditing(false)
         }
     }, [isOwner]);
 
+    // Handle card validation by trimming and validating the url. Store the result into a bool array.
     useEffect(() => {
         const newValidity = linkCards.map(link => {
             const url = link.url.trim();

@@ -12,8 +12,10 @@ const authSchema = z.object({
     password: z.string().min(6),
 });
 
+// Register route to handle user registration
 router.post('/register', async (req, res) => {
     try {
+        // Validate incoming data against the schema
         const {username, password} = authSchema.parse(req.body);
 
         const existingUser = await prisma.user.findUnique({
@@ -37,18 +39,22 @@ router.post('/register', async (req, res) => {
             username: user.username
         }, process.env.JWT_SECRET, {expiresIn: '1h'});
 
+        // Respond with the JWT token and a success message
         return res.status(201).send({token, username, message: 'User created successfully'});
     }
     catch (error) {
         if (error instanceof z.ZodError) {
             return res.status(400).send({message: error.errors});
         }
-        return res.status(400).send({message: 'Server Error'});
+        return res.status(400).send({message: 'Server Error', error: error.message});
     }
 });
 
+
+// Login route to handle user authentication
 router.post('/login', async (req, res) => {
     try {
+        // Validate incoming data against the schema
         const {username, password} = authSchema.parse(req.body);
 
         const user = await prisma.user.findUnique({
@@ -68,6 +74,7 @@ router.post('/login', async (req, res) => {
             username: user.username
         }, process.env.JWT_SECRET, {expiresIn: '1h'});
 
+        // Respond with the JWT token and a success message
         return res.status(200).send({token, username, message: "Login success"});
     }
     catch (error) {
