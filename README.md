@@ -16,7 +16,6 @@ This project was developed to gain hands-on experience with industry-standard to
 * [Backend Overview](#backend-overview)
 * [Challenges Faced](#challenges-faced)
 * [Future Improvements](#future-improvements)
-* [License](#license)
 
 ---
 
@@ -148,6 +147,12 @@ The frontend should now be running on `http://localhost:5173`.
     ```json
     { "username": "string", "password": "string" }
     ```
+  * Returns:
+
+    ```json
+    { "token": "string", "username": "string", "message": "Login success" }
+    ```
+    
 * **POST /api/auth/login**
   Login and return a JWT token.
 
@@ -190,7 +195,7 @@ The frontend should now be running on `http://localhost:5173`.
 
 The frontend is built using **React** and **TypeScript**. It allows users to:
 
-* Register, login, and manage their profile.
+* Register and login.
 * Add and manage links, which can be used to share multiple online profiles, portfolios, social media links, etc.
 
 ### Key Features:
@@ -229,6 +234,7 @@ The backend is built with **Node.js** and **Express**, providing a RESTful API f
 * **File Uploads**: Allow users to upload profile pictures or logos for their DevLink page.
 * **OAuth Integration**: Implement OAuth to allow users to log in using GitHub, Google, or other services.
 * **Testing**: Add unit and integration tests for both frontend and backend to ensure reliability.
+* **API Optimization**: Making sure links are saved properly when editing very fast and reduce unnecessary calls.
 
 ---
 
